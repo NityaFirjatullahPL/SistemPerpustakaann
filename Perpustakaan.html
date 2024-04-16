@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perpustakaan Sederhana</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  h1 {
+    text-align: center;
+  }
+  #book-list {
+    margin: 20px auto;
+    width: 80%;
+  }
+  #book-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  #book-list table th, #book-list table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  #book-list table th {
+    background-color: #f2f2f2;
+  }
+  #book-form {
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+  }
+  #book-form input[type="text"] {
+    padding: 8px;
+    width: 60%;
+    margin-right: 10px;
+  }
+  #book-form input[type="submit"] {
+    padding: 8px 20px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<h1>Perpustakaan Sederhana</h1>
+
+<div id="book-form">
+  <h2>Tambah Buku</h2>
+  <form id="add-book-form">
+    <input type="text" id="title" placeholder="Judul Buku">
+    <input type="text" id="author" placeholder="Penulis">
+    <input type="submit" value="Tambah Buku">
+  </form>
+</div>
+
+<div id="book-list">
+  <h2>Daftar Buku</h2>
+  <input type="text" id="search" placeholder="Cari buku...">
+  <table id="books">
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Penulis</th>
+      </tr>
+    </thead>
+    <tbody id="book-list-body">
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const form = document.getElementById('add-book-form');
+  const bookList = document.getElementById('book-list-body');
+  const searchInput = document.getElementById('search');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    addBook(title, author);
+    form.reset();
+  });
+
+  searchInput.addEventListener('input', function() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const books = document.querySelectorAll('#book-list-body tr');
+    books.forEach(function(book) {
+      const title = book.getElementsByTagName('td')[0].innerText.toLowerCase();
+      const author = book.getElementsByTagName('td')[1].innerText.toLowerCase();
+      if (title.includes(searchTerm) || author.includes(searchTerm)) {
+        book.style.display = 'table-row';
+      } else {
+        book.style.display = 'none';
+      }
+    });
+  });
+
+  function addBook(title, author) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${title}</td>
+      <td>${author}</td>
+    `;
+    bookList.appendChild(row);
+  }
+</script>
+
+</body>
+</html>
